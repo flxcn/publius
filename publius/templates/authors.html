@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Federalist Papers - Authors{% endblock %}
+
+{% block content %}
+<div class="authors-list">
+    <h2>Authors of the Federalist Papers</h2>
+    
+    <ul class="authors">
+        {% for author, count in authors %}
+        <li>
+            <a href="/author/{{ author }}">
+                <span class="author-name">{{ author }}</span>
+                <span class="author-count">({{ count }} papers)</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
