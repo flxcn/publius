@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Papers by {{ author }}{% endblock %}
+
+{% block content %}
+<div class="author-papers">
+    <h2>Papers by {{ author }}</h2>
+    
+    <ul class="papers-list">
+        {% for paper in papers %}
+        <li>
+            <a href="/paper/{{ paper.paper_id }}">
+                <span class="paper-number">#{{ paper.paper_id }}</span>
+                <span class="paper-title">{{ paper.title }}</span>
+                {% if paper.date %}
+                <span class="paper-date">{{ paper.date }}</span>
+                {% endif %}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
