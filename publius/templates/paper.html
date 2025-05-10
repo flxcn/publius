@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Federalist No. {{ paper.paper_id }} - {{ paper.title }}{% endblock %}
+
+{% block content %}
+<div class="paper-view">
+    <div class="paper-header">
+        <h2>Federalist No. {{ paper.paper_id }}: {{ paper.title }}</h2>
+        <div class="paper-meta">
+            <span class="author">Author: {{ paper.author }}</span>
+            {% if paper.venue %}
+            <span class="venue">Venue: {{ paper.venue }}</span>
+            {% endif %}
+            {% if paper.date %}
+            <span class="date">Date: {{ paper.date }}</span>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="paper-content">
+        {% for paragraph in paper.text.split('\n\n') %}
+            <p>{{ paragraph }}</p>
+        {% endfor %}
+    </div>
+    
+    <div class="paper-navigation">
+        {% if paper.paper_id > 1 %}
+        <a href="/paper/{{ paper.paper_id - 1 }}" class="prev-paper">&larr; Previous Paper</a>
+        {% endif %}
+        
+        {% if paper.paper_id < 85 %}
+        <a href="/paper/{{ paper.paper_id + 1 }}" class="next-paper">Next Paper &rarr;</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
