@@ -17,7 +17,7 @@
         </div>
     </div>
     
-    <div class="paper-content">
+    <div class="paper-content" id="paperContent">
         {% for paragraph in paper.text.split('\n\n') %}
             <p>{{ paragraph }}</p>
         {% endfor %}
@@ -32,5 +32,150 @@
         <a href="/paper/{{ paper.paper_id + 1 }}" class="next-paper">Next Paper &rarr;</a>
         {% endif %}
     </div>
+    
+    <div class="claude-tools">
+        <h3>Analysis Engine</h3>
+        
+        <div class="selection-instructions">
+            <p>Select text above to analyze, then click the button below to capture your selection:</p>
+            <button id="captureSelection" class="capture-button">Capture Selected Text</button>
+        </div>
+        
+        <div class="selected-text-container">
+            <h4>Selected Text:</h4>
+            <div id="selectedTextDisplay" class="selected-text-display">
+                <p class="no-selection">No text selected yet.</p>
+            </div>
+        </div>
+        
+        <div class="query-container">
+            <!-- <textarea id="userQuery" placeholder="Ask a question about the selected text..."></textarea> -->
+            <button id="askClaude">Analyze</button>
+        </div>
+        
+        <div class="response-container">
+            <div class="response-header">
+                <h4>Publius Response:</h4>
+                <button id="copyResponse" class="copy-button">Copy</button>
+            </div>
+            <div class="response-area">
+                <p class="loading" style="display:none;">Generating response...</p>
+                <div id="responseText"></div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const paperContent = document.getElementById('paperContent');
+    const captureButton = document.getElementById('captureSelection');
+    const selectedTextDisplay = document.getElementById('selectedTextDisplay');
+    const noSelectionText = document.querySelector('.no-selection');
+    const userQuery = "";
+    //  = document.getElementById('userQuery');
+    const askClaudeButton = document.getElementById('askClaude');
+    const loadingElement = document.querySelector('.loading');
+    const responseTextElement = document.getElementById('responseText');
+    const copyButton = document.getElementById('copyResponse');
+    
+    let currentSelectedText = '';
+    
+    // Capture selection button
+    captureButton.addEventListener('click', function() {
+        const selection = window.getSelection();
+        currentSelectedText = selection.toString().trim();
+        
+        if (currentSelectedText) {
+            // Update the selected text display
+            noSelectionText.style.display = 'none';
+            selectedTextDisplay.innerHTML = `<p>${currentSelectedText}</p>`;
+            
+            // Auto-fill a suggested query
+            // userQuery = `Explain this passage from Federalist Paper #{{ paper.paper_id }}:`;
+        } else {
+            alert('No text is currently selected. Please select text from the paper first.');
+        }
+    });
+    
+    // Ask Claude button
+    askClaudeButton.addEventListener('click', function() {
+        const query = `Explain this passage from Federalist Paper #{{ paper.paper_id }}:`;
+        
+        if (!query) {
+            alert('Please enter a question');
+            return;
+        }
+        
+        if (!currentSelectedText) {
+            alert('Please select text from the paper first');
+            return;
+        }
+        
+        // Show loading indicator
+        loadingElement.style.display = 'block';
+        responseTextElement.textContent = '';
+        
+        // Send request to our Flask backend
+        fetch('/ask_claude', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                context: currentSelectedText,
+                paper_id: {{ paper.paper_id }}
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadingElement.style.display = 'none';
+            responseTextElement.innerHTML = formatResponse(data.response);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loadingElement.style.display = 'none';
+            responseTextElement.textContent = 'Error getting response from Claude. Please try again.';
+        });
+    });
+    
+    // Copy response button
+    copyButton.addEventListener('click', function() {
+        const responseText = responseTextElement.innerText;
+        
+        if (!responseText.trim()) {
+            alert('No response to copy');
+            return;
+        }
+        
+        // Use Clipboard API to copy text
+        navigator.clipboard.writeText(responseText)
+            .then(() => {
+                // Show success feedback
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy text to clipboard');
+            });
+    });
+    
+    // Format response with line breaks
+    function formatResponse(text) {
+        return text.replace(/\n/g, '<br>');
+    }
+});
+</script>
 {% endblock %}
