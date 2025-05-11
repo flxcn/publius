@@ -1,10 +1,16 @@
 body {
-    font-family: serif;
+    font-family: 'Times New Roman', Times, serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
     color: #333;
     background-color: #f9f7f1;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 0;
+    /* font-family: 'EB Garamond'; */
 }
 
 header {
@@ -162,4 +168,572 @@ footer {
     background-color: #2c3e50;
     color: white;
     margin-top: 2em;
+}
+
+/* Context menu that appears on text selection */
+.context-menu {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    padding: 5px 0;
+    min-width: 200px;
+}
+
+.menu-option {
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.menu-option:hover {
+    background-color: #f0f0f0;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: black;
+}
+
+.selected-text-container {
+    margin: 20px 0;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.selected-text {
+    font-style: italic;
+}
+
+.query-container {
+    margin: 20px 0;
+}
+
+textarea#userQuery {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+button#askClaude {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button#askClaude:hover {
+    background-color: #2980b9;
+}
+
+.response-container {
+    margin: 20px 0;
+}
+
+.claude-response {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Loading indicator */
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Claude Tools Section */
+.claude-tools {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.claude-tools h3 {
+    margin-top: 0;
+}
+
+.claude-tools textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.claude-tools button {
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.claude-tools button:hover {
+    background-color: #2980b9;
+}
+
+.response-area {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fff;
+    min-height: 100px;
+}
+
+.loading {
+    text-align: center;
+    color: #666;
+}
+
+/* Context menu that appears on text selection */
+.context-menu {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    padding: 5px 0;
+    min-width: 200px;
+}
+
+.menu-option {
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.menu-option:hover {
+    background-color: #f0f0f0;
+}
+
+/* Improved Claude Tools Section */
+.claude-tools {
+    margin-top: 40px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.claude-tools h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.claude-tools h4 {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.selected-text-container {
+    margin: 15px 0;
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.selected-text {
+    font-style: italic;
+}
+
+.no-selection {
+    color: #999;
+    font-style: italic;
+}
+
+.query-container {
+    margin: 20px 0;
+}
+
+#userQuery {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#askClaude {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+#askClaude:hover {
+    background-color: #2980b9;
+}
+
+.response-area {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fff;
+    min-height: 100px;
+}
+
+.loading {
+    text-align: center;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading:before {
+    content: "";
+    display: inline-block;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Modal styles */
+.claude-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 5px;
+    width: 85%;
+    max-width: 900px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: -15px;
+}
+
+.close-button:hover {
+    color: black;
+}
+
+.modal-selected-text, .modal-query, .modal-response {
+    margin-bottom: 25px;
+}
+
+.modal-selected-text h3, .modal-query h3, .modal-response h3 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.modal-selected-text .selected-text {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    font-style: italic;
+}
+
+.modal-query textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.modal-query button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.modal-response .response-content {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-height: 150px;
+    max-height: 400px;
+    overflow-y: auto;
+    line-height: 1.6;
+}
+
+.modal-loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-loading:before {
+    content: "";
+    display: inline-block;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    animation: spin 1s linear infinite;
+}
+
+.modal-button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-button:hover {
+    background-color: #34495e;
+}
+
+/* Selection instructions */
+.selection-instructions {
+    background-color: #f0f7ff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border-left: 3px solid #3498db;
+}
+
+.capture-button {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.capture-button:hover {
+    background-color: #34495e;
+}
+
+/* Selected text display */
+.selected-text-container {
+    margin: 15px 0;
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.selected-text-display {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 3px;
+    max-height: 150px;
+    overflow-y: auto;
+    font-style: italic;
+}
+
+.no-selection {
+    color: #999;
+    font-style: italic;
+}
+
+/* Query container */
+.query-container {
+    margin: 20px 0;
+}
+
+#userQuery {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#askClaude {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#askClaude:hover {
+    background-color: #2980b9;
+}
+
+/* Response container */
+.response-container {
+    margin-top: 20px;
+}
+
+.response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.copy-button {
+    padding: 4px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.copy-button:hover {
+    background-color: #e0e0e0;
+}
+
+.response-area {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-height: 100px;
+}
+
+.loading {
+    text-align: center;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.loading:before {
+    content: "";
+    display: inline-block;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
