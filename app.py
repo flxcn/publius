@@ -3,9 +3,86 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 import json
 import os
 from datetime import datetime
+import requests
+from dotenv import load_dotenv
+from flask import request, jsonify
 
+load_dotenv()
 app = Flask(__name__)
 
+# Add Claude API configuration
+CLAUDE_API_KEY = os.getenv('CLAUDE_API_KEY')
+
+@app.route('/ask_claude', methods=['POST'])
+def ask_claude():
+    data = request.get_json()
+    
+    if not data or 'query' not in data or 'context' not in data:
+        return jsonify({"error": "Invalid request data"}), 400
+    
+    user_query = data['query']
+    text_context = data['context']
+    paper_id = data.get('paper_id', 0)
+    
+    # Check if API key exists
+    api_key = os.environ.get('CLAUDE_API_KEY')
+    if not api_key:
+        print("Warning: CLAUDE_API_KEY not set in environment variables")
+        mock_response = "⚠️ Claude API key is not configured. This is a mock response.\n\n"
+        mock_response += f"Your query: {user_query}\n\n"
+        mock_response += "To get actual responses from Claude, please set the CLAUDE_API_KEY environment variable."
+        return jsonify({"response": mock_response})
+    
+    # Format the prompt for Claude
+    prompt = f"""I'm reading Federalist Paper #{paper_id} and I need help understanding this passage:
+
+"{text_context}"
+
+My question: {user_query}
+
+Please provide a clear, helpful explanation that would help a student understand this historical text better. Include relevant historical context if needed."""
+    
+    # Log information for debugging
+    print(f"Sending request to Claude API for paper #{paper_id}")
+    
+    try:
+        # Use the Messages API with the REQUIRED anthropic-version header
+        response = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01"  # This header is required
+            },
+            json={
+                "model": "claude-3-opus-20240229",
+                "max_tokens": 1000,
+                "messages": [{"role": "user", "content": prompt}]
+            },
+            timeout=30
+        )
+        
+        print(f"API Response status: {response.status_code}")
+        
+        if response.status_code != 200:
+            print(f"Error response: {response.text}")
+            return jsonify({"error": f"Claude API error: {response.text}"}), 500
+        
+        result = response.json()
+        
+        # Extract Claude's response from the API response
+        if "content" in result and len(result["content"]) > 0:
+            claude_response = result["content"][0]["text"]
+        else:
+            print("Unexpected response format:", result)
+            claude_response = "Error: Received unexpected response format from Claude"
+        
+        return jsonify({"response": claude_response})
+        
+    except Exception as e:
+        print(f"Exception when calling Claude API: {e}")
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+    
 # Load the Federalist Papers data
 def load_papers():
     try:
@@ -100,6 +177,7 @@ def api_paper(paper_id):
     if paper:
         return jsonify(paper)
     return jsonify({"error": "Paper not found"}), 404
+
 
 if __name__ == '__main__':
     # Create data directory if it doesn't exist
