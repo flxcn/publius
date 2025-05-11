@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Federalist Papers - Home{% endblock %}
+{% block title %}Publius{% endblock %}
 
 {% block content %}
 <div class="intro">
-    <h2>Welcome to the Federalist Papers Reader</h2>
-    <p>The Federalist Papers are a collection of 85 articles and essays written by Alexander Hamilton, James Madison, and John Jay under the pseudonym "Publius" to promote the ratification of the United States Constitution.</p>
+    <h2>Welcome to <b>Publius</b>, an LLM-augmented reader for <i>The Federalist Papers</i>.</h2>
+    <p>This tool is intended to assist in the educational understanding of the use of Classical exempla in each paper. Click on one to get started.</p>
 </div>
 
 <div class="papers-list">
@@ -15,11 +15,8 @@
         <li>
             <a href="/paper/{{ paper.paper_id }}">
                 <span class="paper-number">#{{ paper.paper_id }}</span>
-                <span class="paper-title">{{ paper.title }}</span>
+                <span class="paper-title" style="width:60%">{{ paper.title }}</span>
                 <span class="paper-author">by {{ paper.author }}</span>
-                {% if paper.date %}
-                <span class="paper-date">{{ paper.date }}</span>
-                {% endif %}
             </a>
         </li>
         {% endfor %}
