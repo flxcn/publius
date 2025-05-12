@@ -92,7 +92,12 @@ Include relevant historical context if needed."""
 # Load the Federalist Papers data
 def load_papers():
     try:
-        with open('data/federalist_papers.json', 'r', encoding='utf-8') as f:
+        # Get the absolute path to the current file (app.py)
+        base_dir = os.path.abspath(os.path.dirname(__file__))
+        # Construct the absolute path to the data file
+        data_file = os.path.join(base_dir, 'data', 'federalist_papers.json')
+
+        with open(data_file, 'r', encoding='utf-8') as f:
             papers = json.load(f)
             # Make sure papers are sorted by paper_id
             papers.sort(key=lambda x: x["paper_id"])
