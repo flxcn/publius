@@ -34,13 +34,19 @@ def ask_claude():
         return jsonify({"response": mock_response})
     
     # Format the prompt for Claude
-    prompt = f"""I'm reading Federalist Paper #{paper_id} and I need help understanding this passage:
+    prompt = f"""You are an expert on the Classics and the Federalist Papers.  I am reading Federalist Paper #{paper_id} and I need help understanding this:
 
 "{text_context}"
 
-My question: {user_query}
+Please provide a clear, helpful explanation addressing these three components:
 
-Please provide a clear, helpful explanation that would help a student understand this historical text better. Include relevant historical context if needed."""
+1. Action: What is the central event being discussed? How does it relate to some community or primary audience?
+
+2. Evaluation: How does the author offer an evaluation of the significance of this action to the community. In particular, is the action held up as “good” or “bad?” 
+
+3. Norm Setting: What norms are conveyed by this action's inclusion in the Federalist Papers?
+
+Include relevant historical context if needed."""
     
     # Log information for debugging
     print(f"Sending request to Claude API for paper #{paper_id}")
