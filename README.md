@@ -1,6 +1,6 @@
 # Publius
 
-Publius is a super simple digital reader for _The Federalist Papers_ that helps students better understand Classical references in the text. Read the full writeup [here](https://github.com/flxcn/publius/blob/main/publius_paper.pdf)
+Publius is a super simple digital reader for _The Federalist Papers_ that helps students better understand Classical references in the text. Read the full writeup [here](https://github.com/flxcn/publius/blob/main/publius_paper.pdf).
 
 ## Highlights
 - Includes full text of all 85 papers, from Project Gutenburg
